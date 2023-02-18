@@ -32,6 +32,8 @@ app.post('/books', bookHandler.postBook);
 
 app.delete('/books/:id', bookHandler.deleteBook)
 
+app.put('/books/:id', bookHandler.putBook)
+
 //error handler middleware
 app.use((err, req, res, next)=> res.status(500).send(err.message));
 
