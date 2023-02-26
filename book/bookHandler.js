@@ -7,7 +7,7 @@ const bookHandler = {};
 
 
 bookHandler.getBooks = function(req, res, next){
-  let queryObject = {};
+  let queryObject = {email: req.user.email};
   // empty object returns all 
   Book.find(queryObject)
   .then(data => res.status(200).send(data))
@@ -16,7 +16,7 @@ bookHandler.getBooks = function(req, res, next){
 
 bookHandler.postBook = function(req, res, next){
   // storing data in variable
-  const data = req.body;
+  const data = ({...req.body, email:req.user.email})
   Book.create(data)
     .then(createdBook => res.status(200).send(createdBook))
     .catch(err => next(err))

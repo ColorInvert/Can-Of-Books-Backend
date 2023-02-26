@@ -4,10 +4,15 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const verifyUser = require('./Authorize')
 const bookHandler = require('./book/bookHandler')
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(verifyUser);
+
 const PORT = process.env.PORT || 3002;
 
 // Establishing connection with atlas DB with URL
@@ -23,7 +28,7 @@ db.once('open', () => console.log('Mongoose is connected'));
 
 
 // Default Route for server checking
-app.get('/', (req,res) => res.status(200).send('Default Route Working'));
+app.get('/', (req, res) => res.status(200).send('Default Route Working'));
 
 // Route that runs our bookHandler functions that was imported in
 app.get('/books', bookHandler.getBooks);
@@ -35,7 +40,7 @@ app.delete('/books/:id', bookHandler.deleteBook)
 app.put('/books/:id', bookHandler.putBook)
 
 //error handler middleware
-app.use((err, req, res, next)=> res.status(500).send(err.message));
+app.use((err, req, res, next) => res.status(500).send(err.message));
 
 
 
